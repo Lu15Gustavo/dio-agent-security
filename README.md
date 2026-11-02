@@ -57,8 +57,76 @@ Fale naturalmente, com as suas palavras. Nas primeiras vezes, vale usar um dos [
 | [Pesquisa na web](skills/web-search/SKILL.md) | Responde dúvidas atuais (versões, lançamentos, mercado) com fontes citadas | "Qual a versão estável do Node hoje?" |
 | [Revisão de portfólio](skills/portfolio-review/SKILL.md) | Dá feedback sobre o seu portfólio e GitHub antes de buscar vagas | "O que falta no meu GitHub para uma vaga júnior?" |
 | [Caminho AI Builder](skills/ai-builder-path/SKILL.md) | Ajuda você a escolher o próximo passo na Carreira AI Builder | "Qual Formação AI Builder combina comigo?" |
+| [Triagem de segurança](skills/security-triage/SKILL.md) | Ajuda a entender alertas e vulnerabilidades, priorizar riscos e planejar correções seguras | "Recebi este alerta de segurança; por onde começo?" |
 
 A pesquisa na web usa a busca do seu harness. Se ele não tiver busca própria, veja [como conectar o You.com](docs/youcom-mcp.md), que tem uma opção gratuita.
+
+---
+
+## 🛡️ Evolução deste projeto: triagem de segurança
+
+Este projeto foi especializado para orientar estudantes em uma **triagem segura de vulnerabilidades e incidentes**. A melhoria foi escolhida porque vai além de identificar uma falha: o agente organiza fatos e hipóteses, avalia impacto e probabilidade, prioriza o risco e conduz a correção sem incentivar exploração de sistemas reais.
+
+### O que foi criado ou alterado
+
+- [skills/security-triage/SKILL.md](skills/security-triage/SKILL.md): skill com perguntas de contexto, verificação de autorização, matriz de risco, contenção, investigação, correção e validação.
+- [agent/knowledge/security-basics.md](agent/knowledge/security-basics.md): conhecimento sobre vulnerabilidade, ameaça, risco, incidente, tríade CIA e boas práticas defensivas.
+- [agent/persona.md](agent/persona.md): orientações para o agente agir com responsabilidade quando o assunto envolver segurança.
+- [AGENTS.md](AGENTS.md): registro da nova skill e da base de conhecimento, permitindo que o harness a descubra.
+- [README.md](README.md): documentação da especialização e roteiro de uso.
+
+### Como usar no Hermes
+
+Abra um terminal na pasta que contém o [AGENTS.md](AGENTS.md) e execute o Hermes a partir dela:
+
+```powershell
+cd C:\caminho\para\dio-agent
+hermes
+```
+
+Depois, envie um cenário autorizado e sem dados sensíveis. Por exemplo:
+
+```text
+Estou analisando um laboratório local autorizado.
+Uma aplicação concatena a entrada do usuário em uma consulta SQL.
+Faça uma triagem segura: separe fatos, hipóteses e lacunas,
+avalie impacto e probabilidade e proponha uma correção defensiva.
+Não use payloads nem tente acessar sistemas externos.
+```
+
+O agente deve perguntar pelo contexto antes de sugerir ações, indicar o risco com justificativa e propor uma correção que possa ser validada em laboratório. Para a evidência do projeto, registre prints da conversa no Hermes mostrando:
+
+1. a análise do cenário;
+2. as perguntas de contexto e autorização;
+3. a classificação de risco;
+4. o plano de correção e validação.
+
+> Não compartilhe tokens, senhas, dados pessoais, logs de clientes ou endpoints reais nos prints.
+
+### Como executar os testes do laboratório
+
+Abra o terminal na raiz do projeto, a pasta que contém o [AGENTS.md](AGENTS.md). O comando correto é:
+
+```powershell
+cd C:\Users\luisb\OneDrive\Documentos\DIO-AGENT
+python -m unittest agent.test_lab -v
+```
+
+Também é possível executar o [run_lab.ps1](run_lab.ps1), que ajusta o diretório automaticamente:
+
+```powershell
+cd C:\Users\luisb\OneDrive\Documentos\DIO-AGENT
+.\run_lab.ps1
+```
+
+O resultado esperado termina com:
+
+```text
+Ran 9 tests
+OK
+```
+
+Deixe esse resultado visível no terminal e use a captura de tela como evidência em [docs/evidence/](docs/evidence/).
 
 ---
 
@@ -103,6 +171,15 @@ Quero escolher meu próximo passo na Carreira AI Builder.
 - Meu objetivo: [ex: mudar de carreira, tirar uma ideia do papel]
 ```
 
+**🛡️ Triagem de segurança**
+
+```
+Estou analisando um sistema [local/laboratório/produção] e tenho autorização.
+O que observei foi: [descreva o alerta ou vulnerabilidade sem dados sensíveis].
+Quero separar fatos, hipóteses e lacunas, avaliar impacto e probabilidade,
+priorizar o risco e montar um plano de contenção, correção e validação segura.
+```
+
 ---
 
 ## 🔄 Mantenha o DIO Agent atualizado
@@ -120,7 +197,7 @@ dio-agent/
 ├── CLAUDE.md                Atalho para o Claude Code
 ├── agent/
 │   ├── persona.md           A personalidade e o tom do agente
-│   └── knowledge/           O que o agente sabe sobre a DIO
+│   └── knowledge/           O que o agente sabe sobre a DIO e segurança
 ├── skills/                  Uma pasta por skill, cada uma com o seu SKILL.md
 └── docs/
     ├── glossary.md          Glossário de termos
